@@ -12,9 +12,6 @@ function App() {
   // 表单状态
   const [fatherName, setFatherName] = useState('');
   const [motherName, setMotherName] = useState('');
-  const [fatherBirthDate, setFatherBirthDate] = useState('');
-  const [motherBirthDate, setMotherBirthDate] = useState('');
-  const [babyBirthDate, setBabyBirthDate] = useState('');
   const [babyGender, setBabyGender] = useState('male');
   // 新增：定制字和名字长度功能
   const [customCharacter, setCustomCharacter] = useState('');
@@ -33,8 +30,8 @@ function App() {
   // 生成名字的函数
   const generateNames = async () => {
     // 表单验证
-    if (!fatherName || !motherName || !fatherBirthDate || !motherBirthDate || !babyBirthDate) {
-      setError('请填写所有必填信息');
+    if (!fatherName || !motherName) {
+      setError('请填写父母姓名');
       return;
     }
 
@@ -58,7 +55,14 @@ function App() {
             },
             {
               role: 'user',
-              content: `请为新生儿起9个中文名，要求：\n1. 结合父母信息：父亲姓名${fatherName}，出生日期${fatherBirthDate}；母亲姓名${motherName}，出生日期${motherBirthDate}。\n2. 宝宝信息：出生日期${babyBirthDate}，性别${babyGender === 'male' ? '男' : '女'}。\n3. 每个名字必须体现中国文化内涵，包含美好的寓意。\n4. 名字长度为${nameLength}个汉字。\n5. 名字的第一个字必须是爸爸的姓，也就是父亲姓名"${fatherName}"的第一个字。\n${customCharacter ? (isGeneration ? '6. 名字必须包含辈份字"' + customCharacter + '"，且该字必须放在第二个位置。\n' : '6. 名字必须包含字"' + customCharacter + '"，该字可以放在第二个或第三个位置。\n') : ''}${parentMessage ? '7. 结合父母寄语："' + parentMessage + '"，在名字寓意中体现相关内容。\n' : ''}${extraRules ? '8. ' + extraRules + '\n' : ''}${(customCharacter || parentMessage || extraRules) ? '' : '6. '}请以JSON格式返回结果，包含chineseName（中文名）、chineseMeaning（中文寓意解释）和fiveElementsAnalysis（从五行的角度分析名字的好处）字段。\n${(customCharacter || parentMessage || extraRules) ? '9' : '7'}. 不要包含任何JSON之外的文字。`
+              content: `请为新生儿起9个中文名，要求：
+1. 结合父母信息：父亲姓名${fatherName}，母亲姓名${motherName}。
+2. 宝宝性别：${babyGender === 'male' ? '男' : '女'}。
+3. 每个名字必须体现中国文化内涵，包含美好的寓意。
+4. 名字长度为${nameLength}个汉字。
+5. 名字的第一个字必须是爸爸的姓，也就是父亲姓名"${fatherName}"的第一个字。
+${customCharacter ? (isGeneration ? '6. 名字必须包含辈份字"' + customCharacter + '"，且该字必须放在第二个位置。\n' : '6. 名字必须包含字"' + customCharacter + '"，该字可以放在第二个或第三个位置。\n') : ''}${parentMessage ? '7. 结合父母寄语："' + parentMessage + '"，在名字寓意中体现相关内容。\n' : ''}${extraRules ? '8. ' + extraRules + '\n' : ''}${(customCharacter || parentMessage || extraRules) ? '' : '6. '}请以JSON格式返回结果，包含chineseName（中文名）、chineseMeaning（中文寓意解释）和fiveElementsAnalysis（从五行的角度分析名字的好处）字段。
+${(customCharacter || parentMessage || extraRules) ? '9' : '7'}. 不要包含任何JSON之外的文字。`
             }
           ],
           temperature: 0.8,
@@ -194,39 +198,11 @@ function App() {
               />
             </div>
             
-            <div className="form-group">
-              <label htmlFor="fatherBirthDate">父亲出生日期</label>
-              <input
-                id="fatherBirthDate"
-                type="date"
-                value={fatherBirthDate}
-                onChange={(e) => setFatherBirthDate(e.target.value)}
-              />
-            </div>
-            
-            <div className="form-group">
-              <label htmlFor="motherBirthDate">母亲出生日期</label>
-              <input
-                id="motherBirthDate"
-                type="date"
-                value={motherBirthDate}
-                onChange={(e) => setMotherBirthDate(e.target.value)}
-              />
-            </div>
+
           </div>
           
           <h2>宝宝信息</h2>
           <div className="form-grid">
-            <div className="form-group">
-              <label htmlFor="babyBirthDate">宝宝出生日期</label>
-              <input
-                id="babyBirthDate"
-                type="date"
-                value={babyBirthDate}
-                onChange={(e) => setBabyBirthDate(e.target.value)}
-              />
-            </div>
-            
             <div className="form-group">
               <label htmlFor="babyGender">宝宝性别</label>
               <select
